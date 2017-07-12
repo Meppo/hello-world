@@ -1,4 +1,4 @@
-# hello-world
-ywj's hello world
+# hello-world:project_script
+ ywj hello world's branch: my shell scripts
 
- I'm learning how to use git-hub... haha.
+ There are some scripts for work.
