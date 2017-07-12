@@ -1,7 +1,8 @@
 #!/bin/bash
 
-source log.sh
-source bar.sh
+my_shell_ipc_path=/opt/work/my_script/shell_ipc
+source $my_shell_ipc_path/log.sh
+source $my_shell_ipc_path/bar.sh
 
 work_path=/opt/work/N360
 temp_sign=0
@@ -10,7 +11,7 @@ dst_path=
 make_args=
 quiet_mode=0
 output=/dev/stdout
-logfile=test_log.$$
+logfile=/dev/stdout
 
 # dest file name prefix:
 #   e.g: /opt/work/exchange_dir/opk_dir/airlink_app_P1_20170621_1111.opk
@@ -67,13 +68,17 @@ spe_projects=(
 
 function check_and_mkdir()
 {
+    Debug "1 = $1 "
     if [ ! -d "$1" ];then
         mkdir -p $1
+    Debug "1 = $1 "
         if [ ! -d "$1" ];then
+    Debug "1 = $1 "
             return 1
         fi
     fi
 
+    Debug "1 = $1 "
     return 0
 }
 
@@ -131,8 +136,6 @@ if [ $temp_sign -ne 0 -a -z "$temp_sign_dir" ];then
     exit 1
 fi
 
-#moveBar 10 100 "begin..."
-
 if [ $# -lt 2 ];then
     Error "few args..."
     usage
@@ -144,7 +147,7 @@ shift 1
 project_list=($*)
 
 if [ -z "$dst_path" ];then
-    if check_and_mkdir $DEF_DST_PATH;then
+    if ! check_and_mkdir $DEF_DST_PATH ;then
         Error "error default dst path[$DEF_DST_PATH]."
         exit 1
     fi
@@ -346,9 +349,7 @@ function compile_opk()
     return $st
 }
 
-#moveBar 20 100 'before clean dstpath'
 clean_dstpath
-#moveBar 30 100 "clean dstpath completed"
 
 for p in ${project_list[@]}
 do
@@ -361,6 +362,5 @@ do
         Error "compile ${opk_name} for ${p} FAILED."
     fi
 done
-#moveBar 100 100 "compile ${opk_name} for ${project_list[@]} completed"
 
 Info "Compile finished. get all opks in dir ${dst_path} ..."

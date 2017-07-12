@@ -1,10 +1,19 @@
 #!/bin/bash
 
+# prevent include log.sh multi times
+inc_log_flag=${inc_log_flag:="first"}
+if [ "$inc_log_flag" != "first" ];then
+    #echo "Have include $0, no need include again!"
+    :
+else
+inc_log_flag=included
+
+
 #可将log函数单独放一个文件，通过.命令引入，这样就可以共用了
 #. log.sh 
 #设置日志级别
 loglevel=0 #debug:0; info:1; warn:2; error:3
-logfile="$0.log.$$"
+logfile=${logfile:="$0.log.$$"}
 function log {
         local msg
         local funcs
@@ -84,3 +93,4 @@ function Debug()
     log debug 0 `caller 0 | awk '{print$1}' ` $*
 }
 
+fi #if [ "$inc_log_flag" != "first" ];then

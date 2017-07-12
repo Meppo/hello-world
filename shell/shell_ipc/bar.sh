@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# prevent include bar.sh multi times
+inc_bar_flag=${inc_bar_flag:="first"}
+if [ "$inc_bar_flag" != "first" ];then
+    #echo "Have include $0, no need include again!"
+    :
+else
+inc_bar_flag=included
+
 processBar()
 {
     now=$1
@@ -64,3 +72,5 @@ function moveBar()
 {
     __moveBar $@
 }
+
+fi #if [ "$inc_bar_flag" != "first" ];then
